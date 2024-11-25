@@ -6,11 +6,10 @@ const LinkSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Users",
       required: true,
+      unique: true,
     },
     hash: {
       type: String,
-      required: true,
-      unique: true,
     },
   },
   { timestamps: true }
