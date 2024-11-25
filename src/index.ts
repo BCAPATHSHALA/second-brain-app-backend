@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./configs/database";
-import { userRoutes, contentRoutes } from "./routes";
+import { userRoutes, contentRoutes, brainRoutes } from "./routes";
 
 dotenv.config();
 
@@ -18,6 +18,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/content", contentRoutes);
+app.use("/api/v1/brain", brainRoutes);
 
 connectDB()
   .then(() => {
