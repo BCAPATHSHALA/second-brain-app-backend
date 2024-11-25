@@ -1,10 +1,26 @@
 import { ContentModel } from "../models/content.model";
+import {
+  contentSchema,
+  deleteContentSchema,
+  TContentSchema,
+  TDeleteContentSchema,
+  TUpdateContentSchema,
+  updateContentSchema,
+} from "../schemas/content.schemas";
 
 // API 1: Create Content
 export const createContent = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { tags, title, type, link, content } = req.body;
+    // Zod validation
+    const parsed = contentSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+
+    const { tags, title, type, link, content }: TContentSchema = req.body;
 
     // Todo: Create and update tags
 
@@ -66,8 +82,16 @@ export const getContent = async (req: any, res: any) => {
 // API 3: Delete Content
 export const deleteContent = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { contentId } = req.body;
+    // Zod validation
+    const parsed = deleteContentSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+
+    const { contentId }: TDeleteContentSchema = req.body;
 
     const content = await ContentModel.findOneAndDelete({
       _id: contentId,
@@ -95,8 +119,23 @@ export const deleteContent = async (req: any, res: any) => {
 // API 4: Update Content
 export const updateContent = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { contentId, tags, title, type, link, content } = req.body;
+    // Zod validation
+    const parsed = updateContentSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+
+    const {
+      contentId,
+      tags,
+      title,
+      type,
+      link,
+      content,
+    }: TUpdateContentSchema = req.body;
 
     // Todo: Create and update tags
 
