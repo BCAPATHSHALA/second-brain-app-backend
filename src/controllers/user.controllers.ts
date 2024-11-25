@@ -2,20 +2,26 @@ import { UserModel } from "../models/user.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../utils/constant";
+import {
+  TSignupSchema,
+  signupSchema,
+  TSigninSchema,
+  signinSchema,
+} from "./../schemas/user.schemas";
 
 // API 1: Signup
 export const signup = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { username, password, confirmPassword } = req.body;
-
-    // Check if password and confirm password match
-    if (password !== confirmPassword) {
+    // Zod validation
+    const parsed = signupSchema.safeParse(req.body);
+    if (!parsed.success) {
       return res.status(403).json({
         success: false,
-        message: "Password and Confirm Password does not match",
+        message: parsed.error.issues[0].message,
       });
     }
+
+    const { username, password, confirmPassword }: TSignupSchema = req.body;
 
     // Check if user already exists
     const user = await UserModel.findOne({ username });
@@ -58,7 +64,15 @@ export const signup = async (req: any, res: any) => {
 export const signin = async (req: any, res: any) => {
   try {
     // Zod validation apply later
-    const { username, password } = req.body;
+    const parsed = signinSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+
+    const { username, password }: TSigninSchema = req.body;
 
     // Check if user exists
     const user = await UserModel.findOne({ username });
