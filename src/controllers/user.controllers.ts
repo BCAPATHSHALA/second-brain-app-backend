@@ -104,7 +104,7 @@ export const signin = async (req: any, res: any) => {
 };
 
 // API 3: Logout
-export const logout = async (req: any, res: any) => {
+export const signout = async (req: any, res: any) => {
   try {
     console.log("User ID:", req.userId);
     res.cookie("token", "", {
