@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { z } from "zod";
 const ContentTypes = ["TWEETER", "YOUTUBE", "DOCUMENT", "LINK", "TAG"] as const;
 
@@ -30,21 +31,18 @@ export const contentSchema = z.object({
 export type TContentSchema = z.infer<typeof contentSchema>;
 
 export const deleteContentSchema = z.object({
-  contentId: z
-    .string()
-    .min(24, { message: "Invalid MongoDB ObjectId" })
-    .max(24, { message: "Invalid MongoDB ObjectId" })
-    .regex(/^[a-f\d]{24}$/i, { message: "Invalid MongoDB ObjectId" }),
+  // How to make sure contentId is a valid ObjectId of mongoose: https://github.com/colinhacks/zod/issues/318
+  contentId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+    message: "Invalid contentId",
+  }),
 });
 
 export type TDeleteContentSchema = z.infer<typeof deleteContentSchema>;
 
 export const updateContentSchema = z.object({
-  contentId: z
-    .string()
-    .min(24, { message: "Invalid MongoDB ObjectId" })
-    .max(24, { message: "Invalid MongoDB ObjectId" })
-    .regex(/^[a-f\d]{24}$/i, { message: "Invalid MongoDB ObjectId" }),
+  contentId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
+    message: "Invalid contentId",
+  }),
   tags: z
     .array(z.string())
     .max(20, { message: "Tags must be at most 20 characters" })
