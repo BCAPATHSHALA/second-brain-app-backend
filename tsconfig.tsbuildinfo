@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/configs/constant.ts","./src/configs/database.ts"],"version":"5.7.2"}
+{"root":["./src/index.ts","./src/configs/database.ts","./src/controllers/user.controllers.ts","./src/middlewares/auth.middleware.ts","./src/models/content.model.ts","./src/models/link.model.ts","./src/models/tags.model.ts","./src/models/user.model.ts","./src/routes/index.ts","./src/routes/user.routes.ts","./src/utils/constant.ts","./src/utils/type.d.ts"],"version":"5.7.2"}
