@@ -1,12 +1,25 @@
 import { ContentModel } from "../models/content.model";
 import { LinkModel } from "../models/link.model";
+import {
+  createSharedLinkSchema,
+  getSharedLinkSchema,
+  TCreateSharedLinkSchema,
+  TGetSharedLinkSchema,
+} from "../schemas/brain.schemas";
 import { createHashRandom } from "../utils/constant";
 
 // API 1: Create Shared Link
 export const createSharedLink = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { share } = req.body; // share is a boolean
+    // Zod validation
+    const parsed = createSharedLinkSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+    const { share }: TCreateSharedLinkSchema = req.body; // share is a boolean
 
     if (share) {
       // Create link, if share is true and link does not exist for user because i want to create only one link per user
@@ -67,8 +80,15 @@ export const createSharedLink = async (req: any, res: any) => {
 // API 2: Get Shared Link
 export const getSharedLink = async (req: any, res: any) => {
   try {
-    // Zod validation apply later
-    const { sharedHash } = req.params;
+    // Zod validation
+    const parsed = getSharedLinkSchema.safeParse(req.params);
+    if (!parsed.success) {
+      return res.status(403).json({
+        success: false,
+        message: parsed.error.issues[0].message,
+      });
+    }
+    const { sharedHash }: TGetSharedLinkSchema = req.params;
 
     const link = await LinkModel.findOne({ hash: sharedHash });
 
