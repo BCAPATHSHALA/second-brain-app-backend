@@ -14,7 +14,7 @@ export const signupSchema = z
       .min(6, { message: "Confirm Password must be at least 6 characters" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    // how to make sure password and confirm password match in zod
+    // how to make sure password and confirm password match in zod: https://react-ts-form.com/docs/docs/zod-tips
     message: "Password and Confirm Password does not match",
     path: ["confirmPassword"],
   });
