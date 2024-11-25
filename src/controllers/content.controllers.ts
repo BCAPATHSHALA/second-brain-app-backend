@@ -71,11 +71,11 @@ export const deleteContent = async (req: any, res: any) => {
     // Zod validation apply later
     const { contentId } = req.body;
 
-    const content = await ContentModel.findByIdAndDelete({
+    const content = await ContentModel.findOneAndDelete({
       _id: contentId,
       userId: req.userId,
     });
-    console.log(content);
+
     if (!content) {
       return res.status(403).json({
         success: false,
@@ -102,7 +102,7 @@ export const updateContent = async (req: any, res: any) => {
 
     // Todo: Create and update tags
 
-    const updatedContent = await ContentModel.findByIdAndUpdate(
+    const updatedContent = await ContentModel.findOneAndUpdate(
       { _id: contentId, userId: req.userId },
       {
         $set: {
