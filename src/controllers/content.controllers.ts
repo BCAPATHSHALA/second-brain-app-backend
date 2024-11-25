@@ -1,6 +1,4 @@
 import { ContentModel } from "../models/content.model";
-import { TagsModel } from "../models/tags.model";
-import { UserModel } from "../models/user.model";
 
 // API 1: Create Content
 export const createContent = async (req: any, res: any) => {
