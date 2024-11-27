@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import { ContentTypes } from "../utils/constant";
-import { string } from "zod";
 
 const ContentSchema = new Schema(
   {
