@@ -1,6 +1,13 @@
 import mongoose from "mongoose";
 import { z } from "zod";
-const ContentTypes = ["TWEETER", "YOUTUBE", "DOCUMENT", "LINK", "TAG"] as const;
+const ContentTypes = [
+  "YOUTUBE",
+  "TWITTER",
+  "DOCUMENT",
+  "LINK",
+  "TAG",
+  "CONTENT",
+] as const;
 
 export const contentSchema = z.object({
   title: z

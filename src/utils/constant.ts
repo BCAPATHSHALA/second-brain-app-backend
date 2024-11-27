@@ -4,7 +4,14 @@ dotenv.config();
 const MONGODB_URI: string = process.env.MONGODB_URI!;
 const JWT_SECRET: string = process.env.JWT_SECRET!;
 const UserRoles = ["ADMIN", "USER"];
-const ContentTypes = ["TWEETER", "YOUTUBE", "DOCUMENT", "LINK", "TAG"];
+const ContentTypes = [
+  "YOUTUBE",
+  "TWITTER",
+  "DOCUMENT",
+  "LINK",
+  "TAG",
+  "CONTENT",
+] as const;
 
 const createHashRandom = (length: number) => {
   let result = "";

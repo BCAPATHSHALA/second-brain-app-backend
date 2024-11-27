@@ -15,10 +15,12 @@ export const isAuthenticated = async (
   try {
     // Check the Authorization header
     let token = req.headers["authorization"]?.split(" ")[1];
+    // console.log("TOKEN", token);
     if (!token) {
       // If token not found in Authorization header, check cookies
       token = req.cookies?.token;
     }
+    // console.log("TOKEN", token);
 
     if (!token) {
       return res.status(401).json({
