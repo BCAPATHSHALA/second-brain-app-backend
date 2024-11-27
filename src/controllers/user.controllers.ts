@@ -120,7 +120,7 @@ export const signin = async (req: any, res: any) => {
 // API 3: Logout
 export const signout = async (req: any, res: any) => {
   try {
-    console.log("User ID:", req.userId);
+    // console.log("User ID:", req.userId);
     res.cookie("token", "", {
       httpOnly: true,
       secure: true,
@@ -135,6 +135,28 @@ export const signout = async (req: any, res: any) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",
+    });
+  }
+};
+
+// API 4: AuthCheck
+export const checkAuth = async (req: any, res: any) => {
+  try {
+    // If the request reaches here, it means the user is authenticated
+    // because it has passed through the isAuthenticated middleware
+
+    // Todo: I will share the User information for Roles Based Authentication later
+    res.status(200).json({
+      success: true,
+      isAuthenticated: true,
+      message: "User is authenticated",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      isAuthenticated: false,
+      message: "An error occurred while checking authentication",
     });
   }
 };

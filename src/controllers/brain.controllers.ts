@@ -100,10 +100,9 @@ export const getSharedLink = async (req: any, res: any) => {
     }
 
     // I want to share my brain to someone, so i want to get my content
-    const content = await ContentModel.find({ userId: link.userId }).populate(
-      "userId",
-      "username"
-    );
+    const content = await ContentModel.find({ userId: link.userId })
+      .populate("userId", "username")
+      .sort({ createdAt: -1 });
 
     if (!content) {
       return res.status(403).json({
@@ -120,5 +119,27 @@ export const getSharedLink = async (req: any, res: any) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "Something went wrong" });
+  }
+};
+
+// API 3: Get All Shared Links
+export const getAllSharedLinks = async (req: any, res: any) => {
+  try {
+    const sharedLinks = await LinkModel.find()
+      .populate("userId", "username")
+      .sort({ createdAt: -1 });
+
+
+    res.status(200).json({
+      success: true,
+      message: "Shared links fetched successfully",
+      data: sharedLinks,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching shared links",
+    });
   }
 };
