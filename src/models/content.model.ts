@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { ContentTypes } from "../utils/constant";
+import { string } from "zod";
 
 const ContentSchema = new Schema(
   {
@@ -10,8 +11,7 @@ const ContentSchema = new Schema(
     },
     tags: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Tags",
+        type: String,
       },
     ],
     title: {

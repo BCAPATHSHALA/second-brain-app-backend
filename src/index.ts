@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./configs/database";
 import { userRoutes, contentRoutes, brainRoutes } from "./routes";
+import cors from "cors";
 
 dotenv.config();
 
@@ -11,6 +12,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("<h1>Server is in running mode...</h1>");

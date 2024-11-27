@@ -1,4 +1,5 @@
 import { ContentModel } from "../models/content.model";
+import { TagsModel } from "../models/tags.model";
 import {
   contentSchema,
   deleteContentSchema,
@@ -23,10 +24,27 @@ export const createContent = async (req: any, res: any) => {
     const { tags, title, type, link, content }: TContentSchema = req.body;
 
     // Todo: Create and update tags
+    let allTagTitles: string[] = [];
+    if (tags && tags.length !== 0) {
+      // Find existing tags
+      const existingTags = await TagsModel.find({ title: { $in: tags } });
+      const existingTagNames = existingTags.map((tag) => tag.title);
+
+      // Filter out duplicate tags
+      const newTagNames = tags.filter((tag) => !existingTagNames.includes(tag));
+
+      // Create new tags
+      const newTags = await TagsModel.insertMany(
+        newTagNames.map((tag) => ({ title: tag }))
+      );
+
+      // Merge New and Old Tags
+      allTagTitles = [...existingTagNames, ...newTags.map((tag) => tag.title)];
+    }
 
     const newContent = await ContentModel.create({
       userId: req.userId,
-      tags,
+      tags: allTagTitles,
       title,
       type,
       link,
@@ -138,12 +156,30 @@ export const updateContent = async (req: any, res: any) => {
     }: TUpdateContentSchema = req.body;
 
     // Todo: Create and update tags
+    // Todo: Create and update tags
+    let allTagTitles: string[] = [];
+    if (tags && tags.length !== 0) {
+      // Find existing tags
+      const existingTags = await TagsModel.find({ title: { $in: tags } });
+      const existingTagNames = existingTags.map((tag) => tag.title);
+
+      // Filter out duplicate tags
+      const newTagNames = tags.filter((tag) => !existingTagNames.includes(tag));
+
+      // Create new tags
+      const newTags = await TagsModel.insertMany(
+        newTagNames.map((tag) => ({ title: tag }))
+      );
+
+      // Merge New and Old Tags
+      allTagTitles = [...existingTagNames, ...newTags.map((tag) => tag.title)];
+    }
 
     const updatedContent = await ContentModel.findOneAndUpdate(
       { _id: contentId, userId: req.userId },
       {
         $set: {
-          tags,
+          tags: allTagTitles,
           title,
           type,
           link,
